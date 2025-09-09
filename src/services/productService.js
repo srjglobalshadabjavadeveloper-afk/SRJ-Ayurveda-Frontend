@@ -1,0 +1,38 @@
+// src/services/productService.js
+import axios from "axios";
+
+const API_URL = "http://localhost:8080"; // apna backend base URL daalna
+
+export const getProductsForUser = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/public/products`);
+
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching user products:", error);
+    throw error;
+  }
+};
+
+export const getSubCategoryForUser = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/public/subcategories`);
+
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching user subcategories:", error);
+    throw error;
+  }
+};
+
+export const getCategoryForUser = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/public/categories`);
+
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching user categories:", error);
+    throw error;
+  }
+};
+
