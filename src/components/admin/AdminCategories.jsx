@@ -263,58 +263,106 @@ function AdminCategories() {
     }
   };
   
-  const handleFormSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      const categoryData = { ...formData };
-      if (imageFile) {
-        const uploadRes = await uploadCategoryImage(imageFile);
-        console.log(uploadRes);
-        categoryData.image = uploadRes.url;
-      }
-      let response;
-      if (mode === "edit") {
-        response = await updateCategory(editingId, categoryData);
-      } else {
-        response = await addCategory(categoryData);
-      }
+  // const handleFormSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setLoading(true);
+  //   try {
+  //     const categoryData = { ...formData };
+  //     if (imageFile) {
+  //       const uploadRes = await uploadCategoryImage(imageFile);
+  //       console.log(uploadRes);
+  //       categoryData.image = uploadRes.url;
+  //     }
+  //     let response;
+  //     if (mode === "edit") {
+  //       response = await updateCategory(editingId, categoryData);
+  //     } else {
+  //       response = await addCategory(categoryData);
+  //     }
       
-      console.log("Form submission response:", response);
+  //     console.log("Form submission response:", response);
       
-      if (response.status >= 200 && response.status < 300) {
-        setSuccess(mode === "edit" ? "Category updated successfully" : "Category added successfully");
-        setFormData({ name: "", image: "" });
-        setImagePreview("");
-        setImageFile(null);
-        setMode("list");
-        fetchCategories();
-      } else {
-        setError(response.data || (mode === "edit" ? "Failed to update category" : "Failed to add category"));
-      }
-    } catch (err) {
-      console.error("Error submitting form:", err);
-      setError(err.response?.data || (mode === "edit" ? "Failed to update category" : "Failed to add category"));
-    } finally {
-      setLoading(false);
-    }
-  };
+  //     if (response.status >= 200 && response.status < 300) {
+  //       setSuccess(mode === "edit" ? "Category updated successfully" : "Category added successfully");
+  //       setFormData({ name: "", image: "" });
+  //       setImagePreview("");
+  //       setImageFile(null);
+  //       setMode("list");
+  //       fetchCategories();
+  //     } 
+  //     else {
+  //       setError(response.data || (mode === "edit" ? "Failed to update category" : "Failed to add category"));
+  //     }
+  //   } catch (err) {
+  //     console.error("Error submitting form:", err);
+  //     setError(err.response?.data || (mode === "edit" ? "Failed to update category" : "Failed to add category"));
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
   
-  const startEdit = (category) => {
-    setFormData({
-      name: category.name,
-      image: category.image || ""
-    });
-    
-    if (category.image) {
-      setImagePreview(category.image);
-    } else {
-      setImagePreview("");
+
+  const handleFormSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+  try {
+    const categoryData = { name: formData.name };
+
+    if (imageFile) {
+      const uploadRes = await uploadCategoryImage(imageFile);
+      categoryData.image = uploadRes.url;
+    } else if (formData.image) {
+      categoryData.image = formData.image; // keep old image if exists
     }
+
+    let response;
+    if (mode === "edit") {
+      response = await updateCategory(editingId, categoryData);
+    } else {
+      response = await addCategory(categoryData);
+    }
+
+    console.log("Form submission response:", response);
+
+    // ✅ Don’t check response.status unless you are sure response includes it
+    setSuccess(mode === "edit" ? "Category updated successfully" : "Category added successfully");
+
+    setFormData({ name: "", image: "" });
+    setImagePreview("");
+    setImageFile(null);
+    setMode("list");
+    fetchCategories();
+  } catch (err) {
+    console.error("Error submitting form:", err);
+    setError(err.response?.data || (mode === "edit" ? "Failed to update category" : "Failed to add category"));
+  } finally {
+    setLoading(false);
+  }
+};
+
+
+const startEdit = (category) => {
+  setEditingId(category.id); // ensure correct id
+  setFormData({ name: category.name, image: category.image || "" });
+  setImagePreview(category.image || "");
+  setMode("edit");
+};
+
+  // const startEdit = (category) => {
+  //   setFormData({
+  //     name: category.name,
+  //     image: category.image || ""
+  //   });
     
-    setEditingId(category.id);
-    setMode("edit");
-  };
+  //   if (category.image) {
+  //     setImagePreview(category.image);
+  //   } else {
+  //     setImagePreview("");
+  //   }
+    
+  //   setEditingId(category.id);
+  //   setMode("edit");
+  // };
   
   const startAdd = () => {
     setFormData({

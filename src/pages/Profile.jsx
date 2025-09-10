@@ -68,6 +68,9 @@ const Profile = () => {
   const [editingAddressId, setEditingAddressId] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
+
 
   const [newAddress, setNewAddress] = useState({
     addressLine: '',
@@ -249,17 +252,45 @@ const Profile = () => {
   };
 
 
-  const handleDeleteAddress = async (addressId) => {
-    console.log("🗑️ Trying to delete ID:", addressId);
+  // const handleDeleteAddress = async (addressId) => {
+  //   console.log("🗑️ Trying to delete ID:", addressId);
+  //   try {
+  //     await userService.deleteAddress(addressId);
+  //     setSuccess("Address deleted successfully");
+  //     setAddresses(prev => prev.filter(addr => addr.id !== addressId));
+  //   } catch (err) {
+  //     console.error("Error deleting address:", err);
+  //     setError("Failed to delete address. Please try again.");
+  //   }
+  // };
+
+  const handleDeleteAddress = async (id) => {
     try {
-      await userService.deleteAddress(addressId);
-      setSuccess("Address deleted successfully");
-      setAddresses(prev => prev.filter(addr => addr.id !== addressId));
-    } catch (err) {
-      console.error("Error deleting address:", err);
-      setError("Failed to delete address. Please try again.");
+      await userService.deleteAddress(id);
+      setAddresses((prev) => prev.filter((addr) => addr.id !== id));
+    } catch (error) {
+      console.error("Error deleting address", error);
     }
   };
+
+
+  //   const handleDeleteAddress = async (addressId) => {
+  //   // Show browser confirmation dialog
+  //   const confirmed = window.confirm("Are you sure you want to delete this address?");
+  //   if (!confirmed) return; // user cancelled, exit
+
+  //   console.log("🗑️ Deleting ID:", addressId);
+
+  //   try {
+  //     await userService.deleteAddress(addressId);
+  //     setSuccess("Address deleted successfully");
+  //     setAddresses(prev => prev.filter(addr => addr.id !== addressId));
+  //   } catch (err) {
+  //     console.error("Error deleting address:", err);
+  //     setError("Failed to delete address. Please try again.");
+  //   }
+  // };
+
 
   const handleRemoveCartItem = async (cartItemId) => {
     try {
@@ -761,7 +792,7 @@ const Profile = () => {
                           type="button"
                           onClick={() => {
                             setShowAddAddressForm(false);
-                            // setEditingAddressId(null);
+
                           }}
                           className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
                         >
@@ -772,13 +803,12 @@ const Profile = () => {
                           className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
                         >
                           Save Address
-                          {/* {editingAddressId ? "Update Address" : "Save Address"} */}
+
                         </button>
                       </div>
                     </form>
                   </div>
                 )}
-
 
 
                 {addresses.length > 0 ? (
@@ -802,6 +832,15 @@ const Profile = () => {
                               className="p-2 text-gray-500 hover:text-red-600 rounded-full hover:bg-red-50 transition-colors duration-300">
                               <FiTrash2 />
                             </button>
+                            {/* <button
+                              onClick={() => {
+                                setDeleteId(address.id);
+                                setShowDeleteModal(true);
+                              }}
+                              className="p-2 text-gray-500 hover:text-red-600 rounded-full hover:bg-red-50 transition-colors duration-300"
+                            >
+                              <FiTrash2 />
+                            </button> */}
                           </div>
                         </div>
                       </div>
@@ -813,6 +852,39 @@ const Profile = () => {
                     <p className="mt-2 text-gray-500">No addresses found. Add your first address.</p>
                   </div>
                 )}
+
+
+                {/* {showDeleteModal && (
+                  <div
+                    className="modal show"
+                    style={{ display: "block", position: "fixed", top: 0, left: 0, width: "100%", height: "100%", backgroundColor: "rgba(0,0,0,0.5)" }}
+                  >
+                    <Modal.Dialog>
+                      <Modal.Header>
+                        <Modal.Title>Confirm Delete</Modal.Title>
+                      </Modal.Header>
+
+                      <Modal.Body>
+                        <p>Are you sure you want to delete this address?</p>
+                      </Modal.Body>
+
+                      <Modal.Footer>
+                        <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+                          Cancel
+                        </Button>
+                        <Button
+                          variant="danger"
+                          onClick={() => {
+                            handleDeleteAddress(deleteId);
+                            setShowDeleteModal(false);
+                          }}
+                        >
+                          Delete
+                        </Button>
+                      </Modal.Footer>
+                    </Modal.Dialog>
+                  </div>
+                )} */}
 
                 {/* update modal */}
                 {isModalOpen && selectedAddress && (
@@ -840,7 +912,6 @@ const Profile = () => {
                           />
                         </div>
 
-
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-1">State</label>
                           <input
@@ -851,7 +922,6 @@ const Profile = () => {
                             required
                           />
                         </div>
-
 
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-1">Pin Code</label>
@@ -889,17 +959,15 @@ const Profile = () => {
                           />
                         </div>
 
-                        <div className="flex justify-end gap-3">
+                        <div className="flex justify-end gap-3 mt-4 ">
                           <button
                             onClick={() => setIsModalOpen(false)}
-                            className="px-4 py-2 bg-gray-300 rounded mt-4"
-                          >
+                            className="px-4 py-2 bg-gray-300 rounded ">
                             Cancel
                           </button>
                           <button
                             onClick={handleUpdate}
-                            className="px-4 py-2 bg-blue-600 text-white rounded mt-4"
-                          >
+                            className="px-4 py-2 bg-blue-600 text-white rounded">
                             Update Address
                           </button>
                         </div>

@@ -235,7 +235,7 @@ function AdminSubCategories() {
         try {
             const formDataToSend = new FormData();
             formDataToSend.append("name", formData.name);
-            formDataToSend.append("categoryId", formData.categoryId);
+            formDataToSend.append("categoryId",Number(formData.categoryId));
             if (imageFile) {
                 formDataToSend.append("image", imageFile);
             }
