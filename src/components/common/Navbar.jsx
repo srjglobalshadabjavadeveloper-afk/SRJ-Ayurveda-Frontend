@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../../context/AuthContext';
+import { useCart } from "../../context/CartContext";
+
 
 function Navbar() {
   const { isAuthenticated, isAdmin, logout } = useAuthContext();
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  
+  // const { cartItems } = useCart();
+  // const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+
+
   const handleLogout = () => {
     logout();
     navigate('/');
@@ -26,42 +31,42 @@ function Navbar() {
                 <span className="text-2xl font-bold text-emerald-800">Ayurvedh</span>
               </Link>
             </div>
-            
+
             {/* Desktop Navigation Links */}
             <div className="hidden sm:ml-8 sm:flex sm:space-x-4">
-              <Link 
-                to="/" 
+              <Link
+                to="/"
                 className="text-emerald-900 hover:text-emerald-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300"
               >
                 Home
               </Link>
-              <Link 
-                to="/products" 
+              <Link
+                to="/products"
                 className="text-emerald-900 hover:text-emerald-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300"
               >
                 Products
               </Link>
-              <Link 
-                to="/about" 
+              <Link
+                to="/about"
                 className="text-emerald-900 hover:text-emerald-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300"
               >
                 About
               </Link>
-              <Link 
-                to="/contact" 
+              <Link
+                to="/contact"
                 className="text-emerald-900 hover:text-emerald-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300"
               >
                 Contact
               </Link>
             </div>
           </div>
-          
+
           {/* Desktop Authentication Links */}
           <div className="hidden sm:ml-6 sm:flex sm:items-center">
             {isAuthenticated ? (
               <div className="flex items-center space-x-4">
-                <Link 
-                  to="/cart" 
+                <Link
+                  to="/cart"
                   className="relative p-1 text-emerald-900 hover:text-emerald-600 transition-colors duration-300"
                 >
                   <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -70,8 +75,8 @@ function Navbar() {
                   <span className="absolute -top-1 -right-1 bg-amber-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
                 </Link>
                 {/* Wishlist Icon */}
-                <Link 
-                  to="/wishlist" 
+                <Link
+                  to="/wishlist"
                   className="relative p-1 text-emerald-900 hover:text-emerald-600 transition-colors duration-300"
                 >
                   <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -79,8 +84,8 @@ function Navbar() {
                   </svg>
                   <span className="absolute -top-1 -right-1 bg-amber-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">2</span>
                 </Link>
-                <Link 
-                  to="/profile" 
+                <Link
+                  to="/profile"
                   className="flex items-center text-sm rounded-full focus:outline-none"
                 >
                   <div className="h-8 w-8 rounded-full bg-emerald-100 flex items-center justify-center">
@@ -88,14 +93,14 @@ function Navbar() {
                   </div>
                 </Link>
                 {isAdmin && (
-                  <Link 
-                    to="/admin" 
+                  <Link
+                    to="/admin"
                     className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium rounded-md transition-colors duration-300"
                   >
                     Admin
                   </Link>
                 )}
-                <button 
+                <button
                   onClick={handleLogout}
                   className="px-4 py-2 border border-emerald-600 text-emerald-600 hover:bg-emerald-50 text-sm font-medium rounded-md transition-colors duration-300"
                 >
@@ -104,14 +109,14 @@ function Navbar() {
               </div>
             ) : (
               <div className="flex space-x-3">
-                <Link 
-                  to="/login" 
+                <Link
+                  to="/login"
                   className="px-4 py-2 border border-emerald-600 text-emerald-600 hover:bg-emerald-50 text-sm font-medium rounded-md transition-colors duration-300"
                 >
                   Login
                 </Link>
-                <Link 
-                  to="/register" 
+                <Link
+                  to="/register"
                   className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium rounded-md transition-colors duration-300"
                 >
                   Register
@@ -119,7 +124,7 @@ function Navbar() {
               </div>
             )}
           </div>
-          
+
           {/* Mobile menu button and icons */}
           <div className="flex items-center sm:hidden">
             {isAuthenticated && (
@@ -133,9 +138,24 @@ function Navbar() {
                   </svg>
                   <span className="absolute -top-1 -right-1 bg-amber-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
                 </Link>
+                {/* <Link
+                  to="/cart"
+                  className="relative p-1 text-emerald-900 hover:text-emerald-600 transition-colors duration-300 mr-1"
+                >
+                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                      d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                    />
+                  </svg>
+                  {totalItems > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-amber-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                      {totalItems}
+                    </span>
+                  )}
+                </Link> */}
                 {/* Wishlist Icon */}
-                <Link 
-                  to="/wishlist" 
+                <Link
+                  to="/wishlist"
                   className="relative p-1 text-emerald-900 hover:text-emerald-600 transition-colors duration-300 mr-1"
                 >
                   <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -143,8 +163,8 @@ function Navbar() {
                   </svg>
                   <span className="absolute -top-1 -right-1 bg-amber-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">2</span>
                 </Link>
-                <Link 
-                  to="/profile" 
+                <Link
+                  to="/profile"
                   className="flex items-center text-sm rounded-full focus:outline-none mr-2"
                 >
                   <div className="h-8 w-8 rounded-full bg-emerald-100 flex items-center justify-center">
@@ -168,51 +188,51 @@ function Navbar() {
           </div>
         </div>
       </div>
-      
+
       {/* Mobile menu */}
       <div className={`${isMenuOpen ? 'block' : 'hidden'} sm:hidden`}>
         <div className="pt-2 pb-3 space-y-1">
-          <Link 
-            to="/" 
+          <Link
+            to="/"
             className="block px-3 py-2 rounded-md text-base font-medium text-emerald-900 hover:text-emerald-600 hover:bg-emerald-50 transition-colors duration-300"
             onClick={() => setIsMenuOpen(false)}
           >
             Home
           </Link>
-          <Link 
-            to="/products" 
+          <Link
+            to="/products"
             className="block px-3 py-2 rounded-md text-base font-medium text-emerald-900 hover:text-emerald-600 hover:bg-emerald-50 transition-colors duration-300"
             onClick={() => setIsMenuOpen(false)}
           >
             Products
           </Link>
-          <Link 
-            to="/about" 
+          <Link
+            to="/about"
             className="block px-3 py-2 rounded-md text-base font-medium text-emerald-900 hover:text-emerald-600 hover:bg-emerald-50 transition-colors duration-300"
             onClick={() => setIsMenuOpen(false)}
           >
             About
           </Link>
-          <Link 
-            to="/contact" 
+          <Link
+            to="/contact"
             className="block px-3 py-2 rounded-md text-base font-medium text-emerald-900 hover:text-emerald-600 hover:bg-emerald-50 transition-colors duration-300"
             onClick={() => setIsMenuOpen(false)}
           >
             Contact
           </Link>
-          
+
           {isAuthenticated ? (
             <>
               {isAdmin && (
-                <Link 
-                  to="/admin" 
+                <Link
+                  to="/admin"
                   className="block px-3 py-2 rounded-md text-base font-medium text-white bg-emerald-600 hover:bg-emerald-700 transition-colors duration-300"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Admin
                 </Link>
               )}
-              <button 
+              <button
                 onClick={() => {
                   handleLogout();
                   setIsMenuOpen(false);
@@ -224,15 +244,15 @@ function Navbar() {
             </>
           ) : (
             <div className="px-3 py-2 flex flex-col space-y-3">
-              <Link 
-                to="/login" 
+              <Link
+                to="/login"
                 className="block text-center px-4 py-2 border border-emerald-600 text-emerald-600 hover:bg-emerald-50 text-sm font-medium rounded-md transition-colors duration-300"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Login
               </Link>
-              <Link 
-                to="/register" 
+              <Link
+                to="/register"
                 className="block text-center px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium rounded-md transition-colors duration-300"
                 onClick={() => setIsMenuOpen(false)}
               >

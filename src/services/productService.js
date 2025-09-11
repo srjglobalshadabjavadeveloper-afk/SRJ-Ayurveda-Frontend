@@ -1,70 +1,39 @@
-// src/services/productService.js
+
+
 import axios from "axios";
 
-const API_URL = "http://localhost:8080"; // apna backend base URL daalna
-
+const API_URL = "http://localhost:8080"; 
 export const getProductsForUser = async () => {
-  try {
-    const response = await axios.get(`${API_URL}/public/products`);
-
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching user products:", error);
-    throw error;
-  }
-};
-
-export const getSubCategoryForUser = async () => {
-  try {
-    const response = await axios.get(`${API_URL}/public/subcategories`);
-
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching user subcategories:", error);
-    throw error;
-  }
+  const res = await axios.get(`${API_URL}/public/products`);
+  return res.data;
 };
 
 export const getCategoryForUser = async () => {
-  try {
-    const response = await axios.get(`${API_URL}/public/categories`);
-
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching user categories:", error);
-    throw error;
-  }
+  const res = await axios.get(`${API_URL}/public/categories`);
+  return res.data;
 };
 
-export const getProductsByCategoryForUser = async (categoryId) => {
-  try {
-    const response = await axios.get(`${API_URL}/public/categories/${categoryId}/products`);
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching products:", error);
-    return [];
-  }
+export const getCategoryByProductForUser = async (categoryId) => {
+  const res = await axios.get(`${API_URL}/public/categories/${categoryId}/products`);
+  return res.data;
 };
 
-// productService.js
-// export const getSubCategoryCountForCategory = async (categoryId) => {
-//   try {
-//     const response = await axios.get(`${API_URL}/public/categories/${categoryId}/subcategories/count`);
-//     return response.data || 0;
-//   } catch (error) {
-//     console.error("Error fetching subcategory count:", error);
-//     return 0;
-//   }
-// };
+// ✅ New service: fetch subcategories of category
+export const getSubCategoriesByCategoryForUser = async (categoryId) => {
+  const res = await axios.get(`${API_URL}/public/subcategories/category/${categoryId}`);
+  return res.data;
+};
 
-// export const getProductsBySubCategoryForUser = async (subCategoryId) => {
-//   try {
-//     const response = await axios.get(`/subcategories/${subCategoryId}/products`);
-//     return response.data;
-//   } catch (error) {
-//     console.error("Error fetching products:", error);
-//     return [];
-//   }
-// };
+// ✅ New service: fetch products by subcategory
+export const getProductsBySubCategoryForUser = async (subCategoryId) => {
+  const res = await axios.get(`${API_URL}/public/subcategories/${subCategoryId}/products`);
+  return res.data;
+};
 
+
+// ✅ New service: get By product id
+export const getProductByIdForUser = async (id) => {
+  const res = await axios.get(`${API_URL}/public/products/${id}`);
+  return res.data;
+};
 

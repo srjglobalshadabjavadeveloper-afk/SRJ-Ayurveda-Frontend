@@ -6,7 +6,7 @@ function ProductCard({ product }) {
   const productPrice = product.price !== undefined ? `₹${Number(product.price).toFixed(2)}` : 'Price not available';
   const productDescription = product.description || 'No description available';
   const productImage = product.image || null;
-  const productId = product.id || 0;
+  const id = product.id || 0;
 
   return (
     <div className="bg-white rounded-xl shadow-md overflow-hidden  hover:shadow-lg transition-shadow duration-300">
@@ -37,7 +37,7 @@ function ProductCard({ product }) {
         </p>
         <div className="flex justify-between items-center">
           <Link 
-            to={`/products/${productId}`}
+            to={`/products/${id}`}
             className="text-emerald-600 hover:text-emerald-600 font-medium text-sm"
           >
             View Details

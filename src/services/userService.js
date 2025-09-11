@@ -229,6 +229,6 @@ export default {
   removeCartItem,
   clearCart,
   getCartSummary,
-   updateAddress,
+  updateAddress,
   deleteAddress, 
 };
