@@ -8,8 +8,12 @@ function Navbar() {
   const { isAuthenticated, isAdmin, logout } = useAuthContext();
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  // const { cartItems } = useCart();
+  const { cartItems } = useCart();
   // const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  const totalItems = Array.isArray(cartItems)
+  ? cartItems.reduce((sum, item) => sum + (item.quantity || 0), 0)
+  : 0;
+
 
 
   const handleLogout = () => {
@@ -129,39 +133,28 @@ function Navbar() {
           <div className="flex items-center sm:hidden">
             {isAuthenticated && (
               <>
-                <Link 
-                  to="/cart" 
+                <Link
+                  to="/cart"
                   className="relative p-1 text-emerald-900 hover:text-emerald-600 transition-colors duration-300 mr-1"
                 >
                   <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                   </svg>
-                  <span className="absolute -top-1 -right-1 bg-amber-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                  {/* <span className="absolute -top-1 -right-1 bg-amber-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span> */}
+                  <span className="absolute -top-1 -right-1 bg-amber-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                    {totalItems}
+                  </span>
                 </Link>
-                {/* <Link
-                  to="/cart"
-                  className="relative p-1 text-emerald-900 hover:text-emerald-600 transition-colors duration-300 mr-1"
-                >
-                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                      d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                    />
-                  </svg>
-                  {totalItems > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-amber-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                      {totalItems}
-                    </span>
-                  )}
-                </Link> */}
+                
                 {/* Wishlist Icon */}
                 <Link
                   to="/wishlist"
                   className="relative p-1 text-emerald-900 hover:text-emerald-600 transition-colors duration-300 mr-1"
                 >
-                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  {/* <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                  </svg>
-                  <span className="absolute -top-1 -right-1 bg-amber-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">2</span>
+                  </svg> */}
+                  <span className="absolute -top-1 -right-1 bg-amber-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"></span>
                 </Link>
                 <Link
                   to="/profile"

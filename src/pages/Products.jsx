@@ -6,7 +6,7 @@ import {
   getSubCategoriesByCategoryForUser,
   getProductsBySubCategoryForUser
 } from '../services/productService';
-
+import { useCart } from "../context/CartContext";
 import React, { useState, useEffect } from 'react';
 import ProductCard from '../components/products/ProductCard';
 import { FaArrowRight, FaArrowLeft } from "react-icons/fa";
@@ -22,7 +22,7 @@ function Products() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-
+  const { addToCart } = useCart();
   // Carousel indexes
   const [prodIndex, setProdIndex] = useState(0);
   const [catIndex, setCatIndex] = useState(0);
@@ -260,7 +260,7 @@ function Products() {
         <div className="mb-12">
           <div className="flex justify-between items-center mb-8">
             <h2 className="text-2xl font-semibold text-emerald-800">
-              {selectedCategoryName} Products
+              {selectedCategoryName}
             </h2>
           </div>
           {loading ? (
@@ -283,15 +283,24 @@ function Products() {
               >
                 <FaArrowLeft />
               </button>
+              {/* <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+                {searchedProducts
+                  .slice(prodIndex, prodIndex + visibleCounts)
+                  .map((product) => (
+                    <Link key={product.id || product.name} to={`/products/${product.id}`}>
+                      <ProductCard product={product} />
+                    </Link>
+                  ))}
+              </div> */}
+
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
                 {searchedProducts
                   .slice(prodIndex, prodIndex + visibleCounts)
                   .map((product) => (
-                    <Link key={product.id || product.name} to={`/product/${product.id}`}>
-                      <ProductCard product={product} />
-                    </Link>
+                    <ProductCard key={product.id || product.name} product={product} />
                   ))}
               </div>
+
               <button
                 onClick={() =>
                   setProdIndex(

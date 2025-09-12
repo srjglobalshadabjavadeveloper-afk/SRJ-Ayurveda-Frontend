@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
+import { useCart } from "../../context/CartContext";
 
 function ProductCard({ product }) {
+  const { addToCart } = useCart();
   // Handle missing or undefined product properties
   const productName = product.name || 'Unknown Product';
   const productPrice = product.price !== undefined ? `₹${Number(product.price).toFixed(2)}` : 'Price not available';
@@ -13,12 +15,12 @@ function ProductCard({ product }) {
       <div className="p-2">
         <div className="flex justify-center items-center h-48 bg-gray-100 rounded-lg mb-4">
           {productImage ? (
-            <img 
-              src={productImage} 
-              alt={productName} 
+            <img
+              src={productImage}
+              alt={productName}
               className="h-full w-full object-contain"
               onError={(e) => {
-                e.target.onerror = null; 
+                e.target.onerror = null;
                 e.target.src = 'https://via.placeholder.com/150?text=No+Image';
               }}
             />
@@ -36,13 +38,14 @@ function ProductCard({ product }) {
           {productDescription}
         </p>
         <div className="flex justify-between items-center">
-          <Link 
-            to={`/products/${id}`}
-            className="text-emerald-600 hover:text-emerald-600 font-medium text-sm"
-          >
+          <Link to={`/products/${id}`}
+            className="text-emerald-600 hover:text-emerald-600 font-medium text-sm">
             View Details
           </Link>
-          <button className="bg-emerald-600 text-white px-2 text-sm py-2 rounded-lg hover:bg-emerald-700 transition-colors">
+          
+          <button
+            onClick={() => addToCart(product)}
+            className="bg-emerald-600 text-white px-2 text-sm py-2 rounded-lg hover:bg-emerald-700 transition-colors">
             Add to Cart
           </button>
         </div>

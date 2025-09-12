@@ -188,13 +188,14 @@ export const getOrderById = async (orderId) => {
 };
 
 // User Cart
-export const getCart = async () => {
+
+export const getCartApi = async () => {
   const response = await userApi.get('/cart');
   return response.data;
 };
 
-export const addToCart = async (cartItem) => {
-  const response = await userApi.post('/cart', cartItem);
+export const addToCartApi = async ({ productId, quantity = 1 }) => {
+  const response = await userApi.post("/cart", { productId, quantity });
   return response.data;
 };
 
@@ -223,8 +224,9 @@ export default {
   addAddress,
   getOrders,
   getOrderById,
-  getCart,
-  addToCart,
+  getCartApi ,
+  // getCart,
+  addToCartApi,
   updateCartItem,
   removeCartItem,
   clearCart,

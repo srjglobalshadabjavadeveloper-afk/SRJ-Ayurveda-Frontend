@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-// import { useCart } from "../context/CartContext";
+import { useCart } from "../context/CartContext";
 import { useParams, useNavigate } from "react-router-dom";
 import { getProductByIdForUser } from "../services/productService"; 
 
 const ProductDetail = () => {
-    // const { addToCart } = useCart();
+    const { addToCart } = useCart();
     const { id } = useParams();
     const navigate = useNavigate();
     const [product, setProduct] = useState(null);
@@ -48,7 +48,7 @@ const ProductDetail = () => {
                     </p>
                     <div className="flex  gap-5 mb-10">
                         <button className="px-6 py-3 bg-emerald-600 text-white rounded-full hover:bg-emerald-700 transition-colors"
-                            // onClick={() => addToCart(product)}
+                            onClick={() => addToCart(product)}
                              >
                             Add to Cart
                         </button>
